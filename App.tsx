@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 
 import * as firebaseApp from "firebase/app"
 import * as firebaseAuth from "firebase/auth";
@@ -21,10 +21,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Landing } from './src/components/auth/Landing';
 import { Register } from './src/components/auth/Register';
+import { Login } from './src/components/auth/Login';
 
 const Stack = createNativeStackNavigator();
 
-export const App: React.FC = () => {
+export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -41,22 +42,42 @@ export const App: React.FC = () => {
     });
   }
 
-  return(
-    <>
-      {
-        loaded ? 
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName='Landing'>
-            <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}}/>
-            <Stack.Screen name="Register" component={Register} options={{headerShown: false}}/>
-            <Stack.Screen name="Register" component={Register} options={{headerShown: false}}/>
-          </Stack.Navigator>
-        </NavigationContainer> :
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-          <Text>Loading</Text>
-        </View>
-      }
-    
-    </>
-  );
+  function logout() {
+    firebaseAuth.getAuth().signOut();
+  }
+
+  useEffect(() => {
+    componentDidMount()
+  }, []);
+
+  if (!loaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading</Text>
+      </View>
+    )
+  }
+  else if(!loggedIn) {
+    return(
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='Landing'>
+          <Stack.Screen name="Landing" component={Landing} options={{headerShown: false}}/>
+          <Stack.Screen name="Register" component={Register} options={{headerShown: false}}/>
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+  else {
+    return(
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>User is loggedIn</Text>
+        <Button
+          title="Logout"
+          onPress={logout}
+        />
+      </View>
+    );
+  }
 }
+

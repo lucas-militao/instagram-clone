@@ -2,8 +2,6 @@ import React from "react";
 import { Text, View, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-
-
 export const Landing: React.FC = () => {
   const navigation = useNavigation();
 
