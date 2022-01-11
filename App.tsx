@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-import { View, Text, Button } from 'react-native';
+import { View, Text } from 'react-native';
 
 import * as firebaseApp from "firebase/app"
 import * as firebaseAuth from "firebase/auth";
+
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer from "./src/redux/reducers";
+import thunk from 'redux-thunk';
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const firebaseConfig = {
   apiKey: "AIzaSyBx6SqjBm947BFYsQKl879EqutHDE3F1_w",
@@ -19,9 +26,11 @@ firebaseApp.initializeApp(firebaseConfig);
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { Landing } from './src/components/auth/Landing';
 import { Register } from './src/components/auth/Register';
 import { Login } from './src/components/auth/Login';
+// import { Main } from './src/components/Main';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,10 +49,6 @@ export default function App() {
         setLoggedIn(true);
       }
     });
-  }
-
-  function logout() {
-    firebaseAuth.getAuth().signOut();
   }
 
   useEffect(() => {
@@ -70,13 +75,9 @@ export default function App() {
   }
   else {
     return(
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>User is loggedIn</Text>
-        <Button
-          title="Logout"
-          onPress={logout}
-        />
-      </View>
+      <Provider store={store}>
+        <View />
+      </Provider>
     );
   }
 }
