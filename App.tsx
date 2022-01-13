@@ -30,7 +30,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Landing } from './src/components/auth/Landing';
 import { Register } from './src/components/auth/Register';
 import { Login } from './src/components/auth/Login';
-// import { Main } from './src/components/Main';
+import Main from './src/components/Main';
 
 const Stack = createNativeStackNavigator();
 
@@ -76,7 +76,7 @@ export default function App() {
   else {
     return(
       <Provider store={store}>
-        <View />
+        <Main />
       </Provider>
     );
   }

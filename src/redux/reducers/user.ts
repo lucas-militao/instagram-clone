@@ -4,7 +4,7 @@ const initialState = {
 
 export const user = (state = initialState, action) => {
   return {
-    ...StaticRange,
+    ...state,
     currentUser: action.currentUser
   }
 }
