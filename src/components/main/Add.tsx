@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Add() {
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
@@ -9,6 +10,7 @@ export default function Add() {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
+  const navigation = useNavigation();
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -76,6 +78,10 @@ export default function Add() {
        <Button
         title="Pick Image From Gallery"
         onPress={() => pickImage()}
+      />
+      <Button
+        title="Save"
+        onPress={() => navigation.navigate("Save", {image})}
       />
       {image && <Image source={{uri: image}} style={{flex: 1}} />}
     </View>

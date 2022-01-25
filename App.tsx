@@ -32,6 +32,7 @@ import { Register } from './src/components/auth/Register';
 import { Login } from './src/components/auth/Login';
 import Main from './src/components/Main';
 import Add from './src/components/main/Add';
+import { Save } from './src/components/main/Save';
 
 
 const Stack = createNativeStackNavigator();
@@ -82,6 +83,7 @@ export default function App() {
           <Stack.Navigator initialRouteName="Main">
             <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
             <Stack.Screen name="Add" component={Add} />
+            <Stack.Screen name="Save" component={Save} />
           </Stack.Navigator>
         </Provider>
       </NavigationContainer>
