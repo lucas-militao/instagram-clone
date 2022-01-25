@@ -31,6 +31,8 @@ import { Landing } from './src/components/auth/Landing';
 import { Register } from './src/components/auth/Register';
 import { Login } from './src/components/auth/Login';
 import Main from './src/components/Main';
+import Add from './src/components/main/Add';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -75,9 +77,14 @@ export default function App() {
   }
   else {
     return(
-      <Provider store={store}>
-        <Main />
-      </Provider>
+      <NavigationContainer>
+        <Provider store={store}>
+          <Stack.Navigator initialRouteName="Main">
+            <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
+            <Stack.Screen name="Add" component={Add} />
+          </Stack.Navigator>
+        </Provider>
+      </NavigationContainer>
     );
   }
 }

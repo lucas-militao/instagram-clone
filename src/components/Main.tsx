@@ -1,34 +1,17 @@
-import { getAuth } from "firebase/auth";
-import React, { Component, useEffect } from "react";
-import { Button, Text, View } from "react-native";
+import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchUser } from "../redux/actions/index";
+import MaterialCommmunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-// export const Main: React.FC = (props) => {
-//   function componentDidMount() {
-    
-//   }
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { Feed } from "./main/Feed";
+import { Profile } from "./main/Profile";
 
-//   function logout() {
-//     getAuth().signOut();
-//   }
+const Tab = createMaterialBottomTabNavigator();
 
-//   useEffect(() => {
-//     componentDidMount();
-//   }, [])
-
-//   return (
-//     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-//       <Text>User is logged in!</Text>
-//       <Button
-//         title="Logout"
-//         onPress={logout}
-//       />
-//     </View>
-//   )
-// }
+const EmptyScreen = () => {null}
 
 class Main extends Component {
   componentDidMount(): void {
@@ -37,26 +20,42 @@ class Main extends Component {
   }
 
   render(): React.ReactNode {
-    const { currentUser } = this.props;
-
-    if (currentUser == undefined) {
-      return(
-        <View></View>
-      )
-    }
-    
-    function logout() {
-      getAuth().signOut();
-    }
-
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>{currentUser.name} is logged in!</Text>
-        <Button
-          title="Logout"
-          onPress={logout}
+      <Tab.Navigator initialRouteName="Feed">
+        <Tab.Screen 
+          name="Feed" 
+          component={Feed} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommmunityIcons name="home" color={color} size={26} />
+            ),
+          }}
         />
-      </View>
+        <Tab.Screen 
+          name="MainAdd" 
+          component={EmptyScreen} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommmunityIcons name="plus-box" color={color} size={26} />
+            ),
+          }}
+          listeners={({ navigation }) => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate("Add");
+            }
+          })}
+        />
+        <Tab.Screen 
+          name="Profile" 
+          component={Profile} 
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommmunityIcons name="account-circle" color={color} size={26} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
     )
   }
 }
